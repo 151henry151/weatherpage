@@ -1,0 +1,12 @@
+https://www.star.nesdis.noaa.gov/GOES/conus_band.php?sat=G16&band=GEOCOLOR&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=08&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=05&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=DayNightCloudMicroCombo&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=DMW&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=GEOCOLOR&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=AirMass&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=Sandwich&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=12&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=10&length=12
+https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=09&length=12
+
