@@ -1,12 +1,39 @@
+# NOAA GOES-16 Satellite Weather Products
+# All links provide 12-hour loops with 12 images each
+# Satellite: GOES-16 (GOES-East) positioned at 75.2°W
+
+# CONUS (Continental United States) Coverage
 https://www.star.nesdis.noaa.gov/GOES/conus_band.php?sat=G16&band=GEOCOLOR&length=12
+# GeoColor - True color imagery during day, infrared at night. Shows natural-looking colors for easy interpretation.
+
+# Full Disk Coverage (entire visible hemisphere)
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=08&length=12
+# Band 8 - Upper-level water vapor. Shows moisture in upper atmosphere, useful for tracking jet streams and storm systems.
+
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=05&length=12
+# Band 5 - Near IR snow/ice detection. Helps identify snow cover, ice, and cloud properties.
+
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=DayNightCloudMicroCombo&length=12
+# Day Night Cloud Micro Combo RGB - Day: cloud reflectance / Night: low clouds & fog detection.
+
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=DMW&length=12
+# Derived Motion Winds - Wind vectors derived from IR Band 14, shows atmospheric motion.
+
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=GEOCOLOR&length=12
+# GeoColor - True color imagery for full disk view, natural-looking colors.
+
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=AirMass&length=12
+# Air Mass RGB - Composite from infrared and water vapor bands, shows different air mass types.
+
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=Sandwich&length=12
+# Sandwich RGB - Combination of Bands 3 & 13, useful for cloud analysis and storm detection.
+
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=12&length=12
+# Band 12 - Ozone detection, shows ozone distribution in the atmosphere.
+
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=10&length=12
+# Band 10 - Lower-level water vapor, shows moisture in lower atmosphere.
+
 https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G16&band=09&length=12
+# Band 9 - Mid-level water vapor, shows moisture in middle atmosphere.
 
