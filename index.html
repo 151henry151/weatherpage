@@ -46,9 +46,24 @@
                 </a>
             </div>
 
-            <div id="forecast-map-links">
-                <a id="temp-forecast-link" target="_blank">Temperature Forecast Map</a>
-                <a id="precip-forecast-link" target="_blank">Precipitation Forecast Map</a>
+            <!-- Animated Forecast Maps -->
+            <div class="forecast-anim forecast-temp">
+                <a href="https://digital.weather.gov/?zoom=4&lat=37&lon=-96.5&layers=F00BTTTFFTT&region=0&element=0&mxmz=false&barbs=false&subl=TFFFFF&units=english&wunits=nautical&coords=latlon&tunits=localt" target="_blank">
+                    <img id="temp-forecast-anim" src="" alt="Temperature Forecast Animation">
+                    <div class="overlay-text">
+                        <h3>Temperature Forecast</h3>
+                        <p>7-Day Highs Animation</p>
+                    </div>
+                </a>
+            </div>
+            <div class="forecast-anim forecast-precip">
+                <a href="https://digital.weather.gov/?zoom=4&lat=37&lon=-96.5&layers=F00BTTTFFTT&region=0&element=2&mxmz=false&barbs=false&subl=TFFFFF&units=english&wunits=nautical&coords=latlon&tunits=localt" target="_blank">
+                    <img id="precip-forecast-anim" src="" alt="Precipitation Forecast Animation">
+                    <div class="overlay-text">
+                        <h3>Precipitation Forecast</h3>
+                        <p>7-Day Precipitation Animation</p>
+                    </div>
+                </a>
             </div>
 
             <!-- Snow/Ice Detection -->
@@ -354,26 +369,6 @@
             forecastHTML += '</div>';
             
             forecastInfo.innerHTML = forecastHTML;
-
-            const tempMapLink = document.getElementById('temp-forecast-link');
-            if (tempMapLink) {
-                const params = new URLSearchParams({
-                    zoom: 4, lat: lat, lon: lng, layers: 'T0B0TTFFFFT', region: '0',
-                    element: '2', mxmz: 'false', barbs: 'false', subl: 'TFFFFT',
-                    units: 'english', wunits: 'nautical', coords: 'latlon', tunits: 'localt'
-                });
-                tempMapLink.href = `https://digital.weather.gov/?${params.toString()}`;
-            }
-
-            const precipMapLink = document.getElementById('precip-forecast-link');
-            if (precipMapLink) {
-                const params = new URLSearchParams({
-                    zoom: 4, lat: lat, lon: lng, layers: 'T0B0TTFFFFT', region: '0',
-                    element: '6', mxmz: 'false', barbs: 'false', subl: 'TFFFFT',
-                    units: 'english', wunits: 'nautical', coords: 'latlon', tunits: 'localt'
-                });
-                precipMapLink.href = `https://digital.weather.gov/?${params.toString()}`;
-            }
         }
 
         async function getAlerts(zoneId) {
@@ -555,6 +550,68 @@
         
         // Refresh animations every 15 minutes
         setInterval(initializeAnimations, 15 * 60 * 1000);
+
+        // --- FORECAST MAP ANIMATION ---
+        function detectForecastImages(element, callback) {
+            const baseUrl = 'https://graphical.weather.gov/GraphicalNDFD.php';
+            const sector = 'CONUS';
+            const timezone = 'EDT';
+            const width = 515;
+            const urls = [];
+            let n = 1;
+            let maxTries = 10;
+            function tryNext() {
+                if (n > maxTries) {
+                    callback(urls);
+                    return;
+                }
+                const url = `${baseUrl}?width=${width}&timezone=${timezone}&sector=${sector}&element=${element}&n=${n}`;
+                const img = new window.Image();
+                img.style.display = 'none';
+                img.onload = function() {
+                    urls.push(url);
+                    n++;
+                    tryNext();
+                };
+                img.onerror = function() {
+                    callback(urls);
+                };
+                document.body.appendChild(img); // Needed for some browsers to trigger load/error
+                img.src = url;
+            }
+            tryNext();
+        }
+
+        function startForecastAnimations() {
+            const tempImg = document.getElementById('temp-forecast-anim');
+            const precipImg = document.getElementById('precip-forecast-anim');
+            if (!tempImg || !precipImg) return;
+
+            detectForecastImages('maxt', function(tempUrls) {
+                detectForecastImages('pop12', function(precipUrls) {
+                    const frameCount = Math.min(tempUrls.length, precipUrls.length);
+                    let index = 0;
+
+                    function animateBoth() {
+                        if (frameCount > 0) {
+                            tempImg.src = tempUrls[index];
+                            precipImg.src = precipUrls[index];
+                            index = (index + 1) % frameCount;
+                        }
+                    }
+
+                    animateBoth();
+                    setInterval(animateBoth, 1000);
+                });
+            });
+        }
+
+        window.addEventListener('load', () => {
+            startForecastAnimations();
+        });
     </script>
 </body>
+<footer class="weather-footer">
+    Created by <a href="https://hromp.com" target="_blank">hromp.com</a>
+</footer>
 </html>
