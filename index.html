@@ -840,8 +840,7 @@
                     if (satelliteMode === 'regional') {
                         let region = currentRegion.toLowerCase();
                         let resolution = '2400x2400';
-                        let baseMinute = timestamp.getUTCMinutes();
-                        let offsets = [0,1,-1,2,-2,3,-3,4,-4];
+                        
                         if (data.band === 'EXTENT3') {
                             // Regional GLM lightning mapper - optimized approach
                             // GLM products are available at 5-minute intervals starting at minute 1 (1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56)
@@ -849,9 +848,42 @@
                             const timestampStr = `${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${baseMinute.toString().padStart(2, '0')}`;
                             foundUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/GLM/SECTOR/${region}/EXTENT3/${timestampStr}_GOES19-GLM-${region}-EXTENT3-${resolution}.jpg`);
                         } else {
-                            let urlBuilder = (minuteStr) => getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/${region}/${data.band}/${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${minuteStr}_GOES19-ABI-${region}-${data.band}-${resolution}.jpg`);
-                            foundUrl = await tryMinuteOffsets(baseMinute, offsets, urlBuilder);
+                            // Regional ABI images are available at 5-minute intervals
+                            // First try: nearest 00/05/10/15/20/25/30/35/40/45/50/55 minute mark
+                            let baseMinute = Math.floor(timestamp.getUTCMinutes() / 5) * 5;
+                            
+                            // Try the exact 5-minute interval first (00, 05, 10, 15, etc.)
+                            let minuteStr = baseMinute.toString().padStart(2, '0');
+                            let url = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/${region}/${data.band}/${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${minuteStr}_GOES19-ABI-${region}-${data.band}-${resolution}.jpg`);
+                            
+                            let success = await new Promise(resolve => {
+                                const testImg = new window.Image();
+                                testImg.onload = () => resolve(true);
+                                testImg.onerror = () => resolve(false);
+                                testImg.src = url;
+                            });
+                            
+                            if (success) {
+                                foundUrl = url;
+                            } else {
+                                // Second try: nearest 01/06/11/16/21/26/31/36/41/46/51/56 minute mark
+                                baseMinute = Math.floor(timestamp.getUTCMinutes() / 5) * 5 + 1;
+                                minuteStr = baseMinute.toString().padStart(2, '0');
+                                url = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/${region}/${data.band}/${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${minuteStr}_GOES19-ABI-${region}-${data.band}-${resolution}.jpg`);
+                                
+                                success = await new Promise(resolve => {
+                                    const testImg = new window.Image();
+                                    testImg.onload = () => resolve(true);
+                                    testImg.onerror = () => resolve(false);
+                                    testImg.src = url;
+                                });
+                                
+                                if (success) {
+                                    foundUrl = url;
+                                }
+                            }
                         }
+                        
                         // Fallback to CONUS/FD if none found
                         if (!foundUrl) {
                             // Try CONUS first, then FD
@@ -948,6 +980,9 @@
                         } else if (data.band === 'EXTENT3') {
                             console.log(`Primary EXTENT3 frame failed, trying fallback minutes...`);
                             tryFallbackEXTENT3(index, data, img, satelliteItem);
+                        } else if (satelliteMode === 'regional') {
+                            console.log(`Primary regional frame failed, trying fallback minutes...`);
+                            tryFallbackRegional(index, data, img, satelliteItem);
                         } else {
                             satelliteItem.classList.remove('loading');
                     console.error(`Initial frame load failed for ${data.band}. URL: ${testImg.src}`);
@@ -1062,6 +1097,99 @@
             
             // If all fallbacks fail
             console.error(`All EXTENT3 fallback attempts failed`);
+            satelliteItem.classList.remove('loading');
+            img.src = '';
+        }
+
+        // Fallback function for regional satellite images when primary minute fails
+        async function tryFallbackRegional(index, data, img, satelliteItem) {
+            const now = new Date();
+            const timestamp = new Date(now.getTime() - (30 * 60 * 1000)); // Use 30 minutes like other fallbacks
+            const year = timestamp.getUTCFullYear();
+            const startOfYear = new Date(Date.UTC(year, 0, 1));
+            const dayOfYear = Math.floor((timestamp.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+            const hour = timestamp.getUTCHours();
+            const minute = timestamp.getUTCMinutes();
+            const region = currentRegion.toLowerCase();
+            
+            // Try different 5-minute intervals going backward in time
+            // First try: 00/05/10/15/20/25/30/35/40/45/50/55 minute marks
+            // Second try: 01/06/11/16/21/26/31/36/41/46/51/56 minute marks
+            const testMinutes = [];
+            
+            // Generate test minutes going backward from current time
+            // Try 00/05/10/15/20/25/30/35/40/45/50/55 pattern first
+            for (let i = 0; i < 12; i++) {
+                const testMinute = Math.floor(minute / 5) * 5 - (i * 5);
+                if (testMinute >= 0) {
+                    testMinutes.push(testMinute);
+                }
+            }
+            
+            // Then try 01/06/11/16/21/26/31/36/41/46/51/56 pattern
+            for (let i = 0; i < 12; i++) {
+                const testMinute = Math.floor(minute / 5) * 5 + 1 - (i * 5);
+                if (testMinute >= 0) {
+                    testMinutes.push(testMinute);
+                }
+            }
+            
+            // Remove duplicates and sort in descending order (most recent first)
+            const uniqueMinutes = [...new Set(testMinutes)].sort((a, b) => b - a);
+            
+            for (let testMinute of uniqueMinutes) {
+                const timestampStr = `${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${testMinute.toString().padStart(2, '0')}`;
+                const fallbackUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/${region}/${data.band}/${timestampStr}_GOES19-ABI-${region}-${data.band}-2400x2400.jpg`);
+                
+                try {
+                    const success = await new Promise((resolve) => {
+                        const testImg = new Image();
+                        testImg.onload = () => resolve(true);
+                        testImg.onerror = () => resolve(false);
+                        testImg.src = fallbackUrl;
+                    });
+                    
+                    if (success) {
+                        console.log(`Regional fallback successful with minute ${testMinute}`);
+                        satelliteItem.classList.remove('loading');
+                        img.src = fallbackUrl;
+                        if (data.autoAnimate) {
+                            startAnimationLoop(index);
+                        }
+                        return; // Success, exit function
+                    }
+                } catch (error) {
+                    console.log(`Regional fallback minute ${testMinute} failed`);
+                }
+            }
+            
+            // If all regional fallbacks fail, try CONUS as final fallback
+            console.log(`All regional fallback attempts failed, trying CONUS fallback...`);
+            const conusUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/CONUS/${data.band}/${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}01_GOES19-ABI-CONUS-${data.band}-2500x1500.jpg`);
+            
+            try {
+                const success = await new Promise((resolve) => {
+                    const testImg = new Image();
+                    testImg.onload = () => resolve(true);
+                    testImg.onerror = () => resolve(false);
+                    testImg.src = conusUrl;
+                });
+                
+                if (success) {
+                    console.log(`CONUS fallback successful for regional image`);
+                    satelliteItem.classList.remove('loading');
+                    img.src = conusUrl;
+                    if (data.autoAnimate) {
+                        startAnimationLoop(index);
+                    }
+                    return; // Success, exit function
+                }
+            } catch (error) {
+                console.log(`CONUS fallback failed for regional image`);
+            }
+            
+            // If all fallbacks fail
+            console.error(`All regional fallback attempts failed`);
             satelliteItem.classList.remove('loading');
             img.src = '';
         }
