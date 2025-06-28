@@ -16,7 +16,11 @@
             <div class="current-conditions">
                 <div class="current-conditions-header">
                     <h2>CURRENT WEATHER<span id="current-zip"> (05753)</span></h2>
+                    <div class="button-group">
                     <button id="change-zip-btn">Change Zip</button>
+                        <button id="forecast-daily-btn" class="mode-btn mode-btn-active">Daily</button>
+                        <button id="forecast-hourly-btn" class="mode-btn">Hourly</button>
+                    </div>
                 </div>
                 <div id="weather-info"></div>
                 <div id="location-input-container" class="hidden">
@@ -38,9 +42,18 @@
             </div>
         </div>
 
-        <div class="forecast-animations-row">
+        <!-- Featured Animations with Mobile Accordions -->
+        <div class="featured-animations-mobile">
+            <!-- CONUS GeoColor Accordion -->
+            <button class="accordion-button" onclick="toggleFeaturedAccordion('conus-accordion')">
+                <div class="hamburger-icon">
+                    <span></span>
+                </div>
+                <span class="accordion-title">CONUS GeoColor Satellite</span>
+            </button>
+            <div id="conus-accordion" class="accordion-content">
             <div class="satellite-item featured" data-band="GEOCOLOR" data-sector="CONUS">
-                <div class="loading-spinner"></div>
+                    <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/conus_band.php?sat=G19&band=GEOCOLOR&length=24" target="_blank">
                     <img src="" alt="CONUS GeoColor" class="satellite-image">
                     <div class="overlay-text">
@@ -49,55 +62,122 @@
                     </div>
                 </a>
             </div>
+            </div>
+            
+            <!-- Temperature Forecast Accordion -->
+            <button class="accordion-button" onclick="toggleFeaturedAccordion('temp-accordion')">
+                <div class="hamburger-icon">
+                    <span></span>
+                </div>
+                <span class="accordion-title">Temperature Forecast Map</span>
+            </button>
+            <div id="temp-accordion" class="accordion-content">
             <div class="forecast-link-container">
                 <button id="temp-forecast-btn" class="forecast-link-btn">
-                    <img id="temp-forecast-img" src="" alt="Temperature Forecast" class="forecast-button-img">
+                        <img id="temp-forecast-img" src="" alt="Temperature Forecast" class="forecast-button-img">
+                        <div class="forecast-button-content">
+                    <h3>Temperature Forecast Map</h3>
+                    <p>7-Day Highs Animation</p>
+                        </div>
+                </button>
+            </div>
+            </div>
+            
+            <!-- Precipitation Forecast Accordion -->
+            <button class="accordion-button" onclick="toggleFeaturedAccordion('precip-accordion')">
+                <div class="hamburger-icon">
+                    <span></span>
+                </div>
+                <span class="accordion-title">Precipitation Forecast Map</span>
+            </button>
+            <div id="precip-accordion" class="accordion-content">
+            <div class="forecast-link-container">
+                <button id="precip-forecast-btn" class="forecast-link-btn">
+                        <img id="precip-forecast-img" src="" alt="Precipitation Forecast" class="forecast-button-img">
+                        <div class="forecast-button-content">
+                    <h3>Precipitation Forecast Map</h3>
+                    <p>7-Day Precipitation Animation</p>
+                        </div>
+                </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Featured Animations (hidden on mobile) -->
+        <div class="forecast-animations-row desktop-only">
+            <div class="satellite-item featured" data-band="GEOCOLOR" data-sector="CONUS">
+                <div class="loading-spinner"></div>
+                <a href="https://www.star.nesdis.noaa.gov/GOES/conus_band.php?sat=G19&band=GEOCOLOR&length=24" target="_blank">
+                    <img src="" alt="CONUS GeoColor" class="satellite-image">
+                    <div class="overlay-text">
+                        <h3>CONUS GeoColor</h3>
+                        <p>True color view of the US</p>
+                </div>
+                </a>
+                    </div>
+            <div class="forecast-link-container">
+                <button id="temp-forecast-btn-desktop" class="forecast-link-btn">
+                    <img id="temp-forecast-img-desktop" src="" alt="Temperature Forecast" class="forecast-button-img">
                     <div class="forecast-button-content">
                     <h3>Temperature Forecast Map</h3>
                     <p>7-Day Highs Animation</p>
-                    </div>
-                </button>
             </div>
+                </button>
+        </div>
             <div class="forecast-link-container">
-                <button id="precip-forecast-btn" class="forecast-link-btn">
-                    <img id="precip-forecast-img" src="" alt="Precipitation Forecast" class="forecast-button-img">
+                <button id="precip-forecast-btn-desktop" class="forecast-link-btn">
+                    <img id="precip-forecast-img-desktop" src="" alt="Precipitation Forecast" class="forecast-button-img">
                     <div class="forecast-button-content">
                     <h3>Precipitation Forecast Map</h3>
                     <p>7-Day Precipitation Animation</p>
-                    </div>
+                </div>
                 </button>
-            </div>
-        </div>
-
-        <!-- Modal Dialogs for Forecast Animations -->
-        <div id="temp-forecast-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Temperature Forecast Animation</h2>
-                    <span class="close" id="temp-close">&times;</span>
-                </div>
-                <div class="modal-body">
-                        <img id="temp-forecast-anim" src="" alt="Temperature Forecast Animation">
                     </div>
             </div>
-        </div>
 
-        <div id="precip-forecast-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Precipitation Forecast Animation</h2>
-                    <span class="close" id="precip-close">&times;</span>
+        <!-- Forecast Summary Section with Mobile Accordions -->
+        <div class="forecast-summary-mobile">
+            <!-- 5-Day Forecast Accordion -->
+            <button class="accordion-button" onclick="toggleForecastAccordion('daily-accordion')">
+                <div class="hamburger-icon">
+                    <span></span>
                 </div>
-                <div class="modal-body">
-                        <img id="precip-forecast-anim" src="" alt="Precipitation Forecast Animation">
-                    </div>
+                <span class="accordion-title">5-Day Forecast</span>
+            </button>
+            <div id="daily-accordion" class="accordion-content">
+                <div id="daily-summary-content"></div>
+            </div>
+            
+            <!-- Hourly Forecast Accordion -->
+            <button class="accordion-button" onclick="toggleForecastAccordion('hourly-accordion')">
+                <div class="hamburger-icon">
+                    <span></span>
+                </div>
+                <span class="accordion-title">Hourly Forecast</span>
+            </button>
+            <div id="hourly-accordion" class="accordion-content">
+                <div id="hourly-summary-content"></div>
             </div>
         </div>
+        
+        <!-- Desktop Forecast Summary (hidden on mobile) -->
+        <div id="forecast-summary-container" class="desktop-only" style="padding:5px 10px;background-color:#1a1a1a;border-top:1px solid #333;">
+            <div id="forecast-summary"></div>
+        </div>
 
+        <!-- Satellite Grid Accordion -->
+        <div id="satellite-accordion-container" style="padding:5px 10px;background-color:#1a1a1a;border-top:1px solid #333;">
+            <div style="cursor:pointer;" onclick="toggleSatelliteAccordion()">
+                <div style="font-weight:bold;color:#00ff00;margin-bottom:5px;display:flex;align-items:center;gap:5px;">
+                    <span id="satellite-accordion-toggle">▶</span>
+                    Additional Satellite Views
+                </div>
+            </div>
+            <div id="satellite-accordion-content" style="display:none;">
         <div class="satellite-grid">
             <!-- Full Disk GeoColor -->
             <div class="satellite-item" data-band="GEOCOLOR" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=GEOCOLOR&length=24" target="_blank">
                     <img src="" alt="Full Disk GeoColor" class="satellite-image">
                     <div class="overlay-text">
@@ -109,7 +189,7 @@
 
             <!-- Day/Night Cloud Combo -->
             <div class="satellite-item" data-band="DayNightCloudMicroCombo" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=DayNightCloudMicroCombo&length=24" target="_blank">
                     <img src="" alt="Day/Night Cloud Combo" class="satellite-image">
                     <div class="overlay-text">
@@ -121,7 +201,7 @@
 
             <!-- Air Mass RGB -->
             <div class="satellite-item" data-band="AirMass" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=AirMass&length=24" target="_blank">
                     <img src="" alt="Air Mass RGB" class="satellite-image">
                     <div class="overlay-text">
@@ -133,7 +213,7 @@
 
             <!-- Dust RGB -->
             <div class="satellite-item" data-band="Dust" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=Dust&length=24" target="_blank">
                     <img src="" alt="Dust RGB" class="satellite-image">
                     <div class="overlay-text">
@@ -145,7 +225,7 @@
 
             <!-- Sandwich RGB -->
             <div class="satellite-item" data-band="Sandwich" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=Sandwich&length=24" target="_blank">
                     <img src="" alt="Sandwich RGB" class="satellite-image">
                     <div class="overlay-text">
@@ -157,7 +237,7 @@
 
             <!-- Day/Night Cloud Micro Combo (dim=1) -->
             <div class="satellite-item" data-band="DayNightCloudMicroCombo" data-sector="FD" data-dim="1">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=DayNightCloudMicroCombo&length=24&dim=1" target="_blank">
                     <img src="" alt="Day/Night Cloud Micro Combo" class="satellite-image">
                     <div class="overlay-text">
@@ -169,7 +249,7 @@
 
             <!-- Band 16 -->
             <div class="satellite-item" data-band="16" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=16&length=24&dim=1" target="_blank">
                     <img src="" alt="Band 16" class="satellite-image">
                     <div class="overlay-text">
@@ -181,7 +261,7 @@
 
             <!-- Band 15 -->
             <div class="satellite-item" data-band="15" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=15&length=24&dim=1" target="_blank">
                     <img src="" alt="Band 15" class="satellite-image">
                     <div class="overlay-text">
@@ -193,7 +273,7 @@
 
             <!-- Band 14 -->
             <div class="satellite-item" data-band="14" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=14&length=24&dim=1" target="_blank">
                     <img src="" alt="Band 14" class="satellite-image">
                     <div class="overlay-text">
@@ -205,7 +285,7 @@
 
             <!-- Band 13 -->
             <div class="satellite-item" data-band="13" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=13&length=24" target="_blank">
                     <img src="" alt="Band 13" class="satellite-image">
                     <div class="overlay-text">
@@ -217,7 +297,7 @@
 
             <!-- Band 12 -->
             <div class="satellite-item" data-band="12" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=12&length=24" target="_blank">
                     <img src="" alt="Ozone Detection" class="satellite-image">
                     <div class="overlay-text">
@@ -229,7 +309,7 @@
 
             <!-- Band 11 -->
             <div class="satellite-item" data-band="11" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=11&length=24" target="_blank">
                     <img src="" alt="Band 11" class="satellite-image">
                     <div class="overlay-text">
@@ -241,7 +321,7 @@
 
             <!-- Band 10 -->
             <div class="satellite-item" data-band="10" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=10&length=24" target="_blank">
                     <img src="" alt="Lower Water Vapor" class="satellite-image">
                     <div class="overlay-text">
@@ -253,7 +333,7 @@
 
             <!-- Band 09 -->
             <div class="satellite-item" data-band="09" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=09&length=24" target="_blank">
                     <img src="" alt="Mid Water Vapor" class="satellite-image">
                     <div class="overlay-text">
@@ -265,7 +345,7 @@
 
             <!-- Band 08 -->
             <div class="satellite-item" data-band="08" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=08&length=24" target="_blank">
                     <img src="" alt="Upper Water Vapor" class="satellite-image">
                     <div class="overlay-text">
@@ -277,7 +357,7 @@
 
             <!-- Band 07 (Shortwave Window) - Alternative to EXTENT3 -->
             <div class="satellite-item" data-band="07" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=07&length=24" target="_blank">
                     <img src="" alt="Band 07 Shortwave Window" class="satellite-image">
                     <div class="overlay-text">
@@ -289,7 +369,7 @@
 
             <!-- Band 06 -->
             <div class="satellite-item" data-band="06" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=06&length=24" target="_blank">
                     <img src="" alt="Band 06" class="satellite-image">
                     <div class="overlay-text">
@@ -301,7 +381,7 @@
 
             <!-- Band 05 -->
             <div class="satellite-item" data-band="05" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=05&length=24" target="_blank">
                     <img src="" alt="Snow/Ice Detection" class="satellite-image">
                     <div class="overlay-text">
@@ -313,7 +393,7 @@
 
             <!-- Band 04 -->
             <div class="satellite-item" data-band="04" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=04&length=24" target="_blank">
                     <img src="" alt="Band 04" class="satellite-image">
                     <div class="overlay-text">
@@ -325,7 +405,7 @@
 
             <!-- Band 03 -->
             <div class="satellite-item" data-band="03" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=03&length=24" target="_blank">
                     <img src="" alt="Band 03" class="satellite-image">
                     <div class="overlay-text">
@@ -337,7 +417,7 @@
 
             <!-- Band 02 -->
             <div class="satellite-item" data-band="02" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=02&length=24" target="_blank">
                     <img src="" alt="Band 02" class="satellite-image">
                     <div class="overlay-text">
@@ -349,7 +429,7 @@
 
             <!-- Band 01 -->
             <div class="satellite-item" data-band="01" data-sector="FD">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=01&length=24" target="_blank">
                     <img src="" alt="Band 01" class="satellite-image">
                     <div class="overlay-text">
@@ -361,7 +441,7 @@
 
             <!-- EXTENT3 Lightning Mapper -->
             <div class="satellite-item" data-band="EXTENT3" data-sector="FD" data-dim="1">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=EXTENT3&length=24&dim=1" target="_blank">
                     <img src="" alt="EXTENT3 Lightning Mapper" class="satellite-image">
                     <div class="overlay-text">
@@ -373,7 +453,7 @@
 
             <!-- Fire Temperature -->
             <div class="satellite-item" data-band="FireTemperature" data-sector="FD" data-dim="1">
-                <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 <a href="https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?sat=G19&band=FireTemperature&length=24&dim=1" target="_blank">
                     <img src="" alt="Fire Temperature" class="satellite-image">
                     <div class="overlay-text">
@@ -381,6 +461,8 @@
                         <p>Wildfire Detection</p>
                     </div>
                 </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -555,6 +637,7 @@
                 const properties = pointsData.properties;
                 const forecastUrl = properties.forecast;
                 const forecastHourlyUrl = properties.forecastHourly;
+                const forecastDetailedUrl = properties.forecastGridData;
                 
                 // Fetch forecast data
                 const forecastResponse = await fetch(forecastUrl);
@@ -564,7 +647,17 @@
                 const hourlyResponse = await fetch(forecastHourlyUrl);
                 const hourlyData = await hourlyResponse.json();
                 
-                displayWeatherData(forecastData, hourlyData, lat, lng);
+                // Fetch detailed forecast data
+                let detailedData = null;
+                try {
+                    const detailedResponse = await fetch(forecastDetailedUrl);
+                    detailedData = await detailedResponse.json();
+                    console.log('Detailed forecast data structure:', detailedData);
+                } catch (error) {
+                    console.log('Detailed forecast not available, using basic forecast');
+                }
+                
+                displayWeatherData(forecastData, hourlyData, detailedData, lat, lng);
                 getAlerts(properties.forecastZone);
                 
             } catch (error) {
@@ -574,30 +667,15 @@
             }
         }
         
-        function displayWeatherData(forecastData, hourlyData, lat, lng) {
-            // Display current conditions from hourly forecast
-            const currentPeriod = hourlyData.properties.periods[0];
-            const weatherInfo = document.getElementById('weather-info');
-            
-            // Style only the 'H' in 'Humidity' and the percentage in green
-            const humidityValue = currentPeriod.relativeHumidity?.value;
-            weatherInfo.innerHTML = `
-                <div class="current-weather">
-                    <div class="temp">${currentPeriod.temperature}°${currentPeriod.temperatureUnit}</div>
-                    <div class="description">${currentPeriod.shortForecast}</div>
-                    <div class="details">
-                        <span>Wind: ${currentPeriod.windSpeed} ${currentPeriod.windDirection}</span>
-                        <span><span class="humidity-label-green">H</span>umidity: <span class="humidity-green">${humidityValue !== undefined && humidityValue !== null ? humidityValue + '%' : 'N/A'}</span></span>
-                    </div>
-                </div>
-            `;
-            
-            // Display 7-day forecast
+        let forecastMode = 'daily'; // 'daily' or 'hourly'
+
+        function renderForecast(forecastData, hourlyData, detailedData, lat, lng) {
             const forecastInfo = document.getElementById('forecast-info');
+            const forecastLink = `https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&FcstType=graphical`;
+            if (forecastMode === 'daily') {
+                // --- DAILY FORECAST (existing logic) ---
             const forecastPeriods = forecastData.properties.periods.slice(0, 14);
             const hourlyPeriods = hourlyData.properties.periods;
-            const forecastLink = `https://forecast.weather.gov/MapClick.php?lat=${lat}&lon=${lng}&FcstType=graphical`;
-            
             // Group forecast periods by day/night
             const dayNightForecasts = {};
             forecastPeriods.forEach(period => {
@@ -605,7 +683,6 @@
                 const dayKey = date.toDateString();
                 const isNight = period.isDaytime === false;
                 const periodKey = isNight ? `${dayKey}-night` : `${dayKey}-day`;
-                
                 if (!dayNightForecasts[periodKey]) {
                     dayNightForecasts[periodKey] = {
                         dayName: date.toLocaleDateString('en-US', { weekday: 'short' }),
@@ -616,50 +693,32 @@
                         icons: []
                     };
                 }
-                
                 dayNightForecasts[periodKey].periods.push(period);
                 dayNightForecasts[periodKey].icons.push(period.icon);
             });
-            
             // Calculate high/low from hourly data for each day/night period
             Object.values(dayNightForecasts).forEach(dayData => {
                 const periodStart = new Date(dayData.startTime);
                 const periodEnd = new Date(dayData.endTime);
-                
-                // Find all hourly periods that fall within this day/night period
                 const relevantHourlyPeriods = hourlyPeriods.filter(hourlyPeriod => {
                     const hourlyStart = new Date(hourlyPeriod.startTime);
-                    const hourlyEnd = new Date(hourlyPeriod.endTime);
                     return hourlyStart >= periodStart && hourlyStart < periodEnd;
                 });
-                
-                // Calculate high/low temperature and humidity from hourly data
                 const temps = relevantHourlyPeriods.map(p => p.temperature).filter(t => t !== null && t !== undefined);
                 const humidities = relevantHourlyPeriods.map(p => p.relativeHumidity?.value).filter(h => h !== null && h !== undefined);
-                
                 dayData.maxTemp = temps.length > 0 ? Math.max(...temps) : null;
                 dayData.minTemp = temps.length > 0 ? Math.min(...temps) : null;
                 dayData.maxHumidity = humidities.length > 0 ? Math.max(...humidities) : null;
                 dayData.minHumidity = humidities.length > 0 ? Math.min(...humidities) : null;
             });
-            
-            // Sort by start time to maintain chronological order
-            const sortedForecasts = Object.values(dayNightForecasts).sort((a, b) => 
-                new Date(a.startTime) - new Date(b.startTime)
-            );
-            
+                const sortedForecasts = Object.values(dayNightForecasts).sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
             let forecastHTML = '<div class="forecast-grid">';
             sortedForecasts.forEach(dayData => {
-                // Use the first icon for the period
                 const icon = dayData.icons[0];
-                
-                // Determine if it's today
                 const today = new Date();
                 const dayDate = new Date(dayData.startTime);
                 const isToday = today.toDateString() === dayDate.toDateString();
-                const displayName = isToday ? (dayData.isNight ? 'Tonight' : 'Today') : 
-                                  (dayData.isNight ? `${dayData.dayName}. night` : `${dayData.dayName}.`);
-
+                    const displayName = isToday ? (dayData.isNight ? 'Tonight' : 'Today') : (dayData.isNight ? `${dayData.dayName}. night` : `${dayData.dayName}.`);
                 forecastHTML += `
                     <a href="${forecastLink}" target="_blank" class="forecast-link">
                         <div class="forecast-day ${dayData.isNight ? 'night' : 'day'}">
@@ -678,12 +737,141 @@
                 `;
             });
             forecastHTML += '</div>';
-            
-            // Remove labels above the forecast grid
+                forecastInfo.innerHTML = forecastHTML;
+                
+                // Show daily forecast summary
+                const summaryContainer = document.getElementById('forecast-summary-container');
+                const summaryDiv = document.getElementById('forecast-summary');
+                if (summaryContainer && summaryDiv) {
+                    summaryContainer.style.display = 'block';
+                    summaryDiv.innerHTML = generateDailySummary(forecastData, detailedData) + '<br>' + generateHourlySummary(hourlyData.properties.periods.slice(0, 12), detailedData);
+                }
+                
+                // Also populate mobile accordion content
+                generateDailySummary(forecastData, detailedData);
+                generateHourlySummary(hourlyData.properties.periods.slice(0, 12), detailedData);
+            } else {
+                // --- HOURLY FORECAST ---
+                const hourlyPeriods = hourlyData.properties.periods.slice(0, 12); // Show next 12 hours
+                let forecastHTML = '<div class="forecast-grid">';
+                hourlyPeriods.forEach(period => {
+                    const date = new Date(period.startTime);
+                    const hourLabel = date.toLocaleTimeString([], { hour: 'numeric', hour12: true }).replace(':00', '');
+                    forecastHTML += `
+                        <div class="forecast-day day">
+                            <div class="day-name">${hourLabel}</div>
+                            <img src="${period.icon}" alt="Weather" class="weather-icon">
+                            <div class="temp-range">
+                                <div class="temp-high">${period.temperature !== null ? period.temperature + '°' : 'N/A'}</div>
+                                <div class="temp-low" style="opacity:0.5;">&nbsp;</div>
+                            </div>
+                            <div class="humidity-range">
+                                <div class="humidity-high"><span class='humidity-label-green'>H</span>${period.relativeHumidity?.value !== undefined && period.relativeHumidity?.value !== null ? period.relativeHumidity.value + '%' : 'N/A'}</div>
+                                <div class="humidity-low" style="opacity:0.5;">&nbsp;</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                forecastHTML += '</div>';
             forecastInfo.innerHTML = forecastHTML;
 
-            // Update today's hi/lo temps and humidities
+                // Show both daily and hourly forecast summaries
+                const summaryContainer = document.getElementById('forecast-summary-container');
+                const summaryDiv = document.getElementById('forecast-summary');
+                if (summaryContainer && summaryDiv) {
+                    summaryContainer.style.display = 'block';
+                    summaryDiv.innerHTML = generateDailySummary(forecastData, detailedData) + '<br>' + generateHourlySummary(hourlyData.properties.periods.slice(0, 12), detailedData);
+                }
+                
+                // Also populate mobile accordion content
+                generateDailySummary(forecastData, detailedData);
+                generateHourlySummary(hourlyData.properties.periods.slice(0, 12), detailedData);
+            }
+        }
+
+        // Generate text summary from hourly forecast data
+        function generateHourlySummary(hourlyPeriods, detailedData) {
+            if (!hourlyPeriods || hourlyPeriods.length === 0) {
+                return '<div style="color:#888;">No hourly forecast data available</div>';
+            }
+
+            const summaries = [];
+            
+            // Group by hour and create summary
+            hourlyPeriods.forEach((period, index) => {
+                if (index >= 12) return; // Limit to 12 hours
+                
+                const time = new Date(period.startTime);
+                const timeStr = time.toLocaleTimeString('en-US', { 
+                    hour: 'numeric', 
+                    minute: '2-digit',
+                    hour12: true 
+                });
+                
+                // Use detailed forecast if available, otherwise fall back to short forecast
+                const forecast = period.detailedForecast || period.shortForecast || '';
+                const temp = period.temperature !== null ? ` (${period.temperature}°)` : '';
+                
+                const summary = `<span style="color:#4ecdc4;font-weight:bold;">${timeStr}:</span> ${forecast}${temp}`;
+                summaries.push(`<div style="margin-bottom:3px;">${summary}</div>`);
+            });
+
+            const summaryContent = summaries.join('');
+            
+            // Update mobile accordion content
+            const mobileContent = document.getElementById('hourly-summary-content');
+            if (mobileContent) {
+                mobileContent.innerHTML = summaryContent;
+                mobileContent.style.display = 'block';
+            }
+            
+            return `<div style="cursor:pointer;" onclick="toggleHourlySummary()">
+                <div style="font-weight:bold;color:#00ff00;margin-bottom:5px;display:flex;align-items:center;gap:5px;">
+                    <span id="hourly-summary-toggle-desktop">▶</span>
+                    Hourly Forecast
+                </div>
+            </div>
+            <div id="hourly-summary-content-desktop" style="display:none;">${summaryContent}</div>`;
+        }
+
+        // Update displayWeatherData to use renderForecast
+        function displayWeatherData(forecastData, hourlyData, detailedData, lat, lng) {
+            // Display current conditions from hourly forecast (unchanged)
+            const currentPeriod = hourlyData.properties.periods[0];
+            const weatherInfo = document.getElementById('weather-info');
+            const humidityValue = currentPeriod.relativeHumidity?.value;
+            weatherInfo.innerHTML = `
+                <div class="current-weather">
+                    <div class="temp">${currentPeriod.temperature}°${currentPeriod.temperatureUnit}</div>
+                    <div class="description">${currentPeriod.shortForecast}</div>
+                    <div class="details">
+                        <span>Wind: ${currentPeriod.windSpeed} ${currentPeriod.windDirection}</span>
+                        <span><span class="humidity-label-green">H</span>umidity: <span class="humidity-green">${humidityValue !== undefined && humidityValue !== null ? humidityValue + '%' : 'N/A'}</span></span>
+                    </div>
+                </div>
+            `;
+            renderForecast(forecastData, hourlyData, detailedData, lat, lng);
             updateTodayHiLo(forecastData, hourlyData);
+        }
+
+        // Toggle event listeners
+        const dailyBtn = document.getElementById('forecast-daily-btn');
+        const hourlyBtn = document.getElementById('forecast-hourly-btn');
+        if (dailyBtn && hourlyBtn) {
+            dailyBtn.addEventListener('click', () => {
+                forecastMode = 'daily';
+                dailyBtn.classList.add('mode-btn-active');
+                hourlyBtn.classList.remove('mode-btn-active');
+                // Re-render forecast
+                getWeatherData();
+            });
+            hourlyBtn.addEventListener('click', () => {
+                forecastMode = 'hourly';
+                hourlyBtn.classList.add('mode-btn-active');
+                dailyBtn.classList.remove('mode-btn-active');
+                // Re-render forecast
+                getWeatherData();
+            });
         }
 
         // Add function to update today's hi/lo temps and humidities
@@ -847,63 +1035,14 @@
                             let baseMinute = Math.floor(timestamp.getUTCMinutes() / 5) * 5 + 1; // Round to nearest 5-minute interval and add 1
                             const timestampStr = `${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${baseMinute.toString().padStart(2, '0')}`;
                             foundUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/GLM/SECTOR/${region}/EXTENT3/${timestampStr}_GOES19-GLM-${region}-EXTENT3-${resolution}.jpg`);
-                        } else {
-                            // Regional ABI images are available at 5-minute intervals
-                            // First try: nearest 00/05/10/15/20/25/30/35/40/45/50/55 minute mark
-                            let baseMinute = Math.floor(timestamp.getUTCMinutes() / 5) * 5;
-                            
-                            // Try the exact 5-minute interval first (00, 05, 10, 15, etc.)
-                            let minuteStr = baseMinute.toString().padStart(2, '0');
-                            let url = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/${region}/${data.band}/${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${minuteStr}_GOES19-ABI-${region}-${data.band}-${resolution}.jpg`);
-                            
-                            let success = await new Promise(resolve => {
-                                const testImg = new window.Image();
-                                testImg.onload = () => resolve(true);
-                                testImg.onerror = () => resolve(false);
-                                testImg.src = url;
-                            });
-                            
-                            if (success) {
-                                foundUrl = url;
                             } else {
-                                // Second try: nearest 01/06/11/16/21/26/31/36/41/46/51/56 minute mark
-                                baseMinute = Math.floor(timestamp.getUTCMinutes() / 5) * 5 + 1;
-                                minuteStr = baseMinute.toString().padStart(2, '0');
-                                url = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/${region}/${data.band}/${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${minuteStr}_GOES19-ABI-${region}-${data.band}-${resolution}.jpg`);
-                                
-                                success = await new Promise(resolve => {
-                                    const testImg = new window.Image();
-                                    testImg.onload = () => resolve(true);
-                                    testImg.onerror = () => resolve(false);
-                                    testImg.src = url;
-                                });
-                                
-                                if (success) {
-                                    foundUrl = url;
-                                }
-                            }
+                            // Regional ABI images - optimized to reduce sequential tests
+                            // Use a single, most likely timestamp instead of testing multiple
+                            let baseMinute = Math.floor(timestamp.getUTCMinutes() / 5) * 5;
+                            let minuteStr = baseMinute.toString().padStart(2, '0');
+                            foundUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/${region}/${data.band}/${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${minuteStr}_GOES19-ABI-${region}-${data.band}-${resolution}.jpg`);
                         }
                         
-                        // Fallback to CONUS/FD if none found
-                        if (!foundUrl) {
-                            // Try CONUS first, then FD
-                            let fallbackRes = '2500x1500';
-                            let fallbackUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/CONUS/${data.band}/${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}01_GOES19-ABI-CONUS-${data.band}-${fallbackRes}.jpg`);
-                            let fallbackSuccess = await new Promise(resolve => {
-                                const testImg = new window.Image();
-                                testImg.onload = () => resolve(true);
-                                testImg.onerror = () => resolve(false);
-                                testImg.src = fallbackUrl;
-                            });
-                            if (fallbackSuccess) {
-                                foundUrl = fallbackUrl;
-                            } else {
-                                // Try FD
-                                fallbackRes = '1808x1808';
-                                fallbackUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/FD/${data.band}/${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}01_GOES19-ABI-FD-${data.band}-${fallbackRes}.jpg`);
-                                foundUrl = fallbackUrl;
-                            }
-                        }
                         frames.push(foundUrl);
                     } else if (data.band === 'EXTENT3') {
                         // Full-disk GLM lightning mapper product - optimized approach
@@ -915,19 +1054,13 @@
                         // Only try fallback if the primary URL fails (handled in the main error handler)
                         foundUrl = directUrl;
                         frames.push(foundUrl);
-                    } else if (data.band === 'GEOCOLOR' && data.sector === 'CONUS') {
-                        // CONUS GeoColor: start at 6, 11, 16, ... with smart fallback
+                    } else if (data.band === 'GEOCOLOR' && data.sector === 'CONUS' && satelliteMode !== 'regional') {
+                        // CONUS GeoColor: optimized approach - use single most likely timestamp (global mode only)
                         let minute = timestamp.getUTCMinutes();
                         let baseMinute = Math.floor((minute - 1) / 5) * 5 + 1; // 6, 11, 16, ...
-                        
-                        // Try the most likely minute offsets in order of probability
-                        const minuteOffsets = [0, 1, -1, 2, -2, 3, -3, 4, -4];
-                        let foundUrl = null;
-                        
-                        // Use the primary minute (most likely to work)
                         let primaryMinute = (baseMinute + 60) % 60;
                         const timestampStr = `${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${primaryMinute.toString().padStart(2, '0')}`;
-                        foundUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/CONUS/GEOCOLOR/${timestampStr}_GOES19-ABI-CONUS-GEOCOLOR-2500x1500.jpg`);
+                        const foundUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/CONUS/GEOCOLOR/${timestampStr}_GOES19-ABI-CONUS-GEOCOLOR-2500x1500.jpg`);
                         
                         frames.push(foundUrl);
                     } else {
@@ -973,8 +1106,8 @@
                             clearTimeout(loadingTimeout);
                         }
                         
-                        // Special fallback for CONUS GeoColor if primary minute fails
-                        if (data.band === 'GEOCOLOR' && data.sector === 'CONUS') {
+                        // Special fallback for CONUS GeoColor if primary minute fails (global mode only)
+                        if (data.band === 'GEOCOLOR' && data.sector === 'CONUS' && satelliteMode !== 'regional') {
                             console.log(`Primary CONUS GeoColor frame failed, trying fallback minutes...`);
                             tryFallbackCONUSGeoColor(index, data, img, satelliteItem);
                         } else if (data.band === 'EXTENT3') {
@@ -1010,8 +1143,8 @@
             const minute = timestamp.getUTCMinutes();
             const baseMinute = Math.floor((minute - 1) / 5) * 5 + 1; // 6, 11, 16, ...
             
-            // Try alternative minute offsets
-            const fallbackOffsets = [1, -1, 2, -2, 3, -3, 4, -4]; // Skip 0 (primary)
+            // Optimized: Try only 3 most likely offsets instead of 8
+            const fallbackOffsets = [1, -1, 2]; // Most likely to work
             
             for (let offset of fallbackOffsets) {
                 const testMinute = (baseMinute + offset + 60) % 60;
@@ -1057,8 +1190,8 @@
             const minute = timestamp.getUTCMinutes();
             const baseMinute = Math.floor(minute / 5) * 5 + 1; // Round to nearest 5-minute interval and add 1
             
-            // Try alternative minute offsets (5-minute intervals)
-            const fallbackOffsets = [5, -5, 10, -10]; // Try adjacent 5-minute intervals
+            // Optimized: Try only 2 most likely offsets instead of 4
+            const fallbackOffsets = [5, -5]; // Try adjacent 5-minute intervals
             
             for (let offset of fallbackOffsets) {
                 const testMinute = (baseMinute + offset + 60) % 60;
@@ -1112,32 +1245,26 @@
             const minute = timestamp.getUTCMinutes();
             const region = currentRegion.toLowerCase();
             
-            // Try different 5-minute intervals going backward in time
-            // First try: 00/05/10/15/20/25/30/35/40/45/50/55 minute marks
-            // Second try: 01/06/11/16/21/26/31/36/41/46/51/56 minute marks
+            // Optimized: Try only 3 most likely minutes instead of 24
             const testMinutes = [];
             
-            // Generate test minutes going backward from current time
-            // Try 00/05/10/15/20/25/30/35/40/45/50/55 pattern first
-            for (let i = 0; i < 12; i++) {
-                const testMinute = Math.floor(minute / 5) * 5 - (i * 5);
-                if (testMinute >= 0) {
-                    testMinutes.push(testMinute);
-                }
+            // Primary: exact 5-minute interval (00, 05, 10, 15, etc.)
+            const primaryMinute = Math.floor(minute / 5) * 5;
+            testMinutes.push(primaryMinute);
+            
+            // Secondary: offset by 1 (01, 06, 11, 16, etc.)
+            const secondaryMinute = Math.floor(minute / 5) * 5 + 1;
+            if (secondaryMinute !== primaryMinute) {
+                testMinutes.push(secondaryMinute);
             }
             
-            // Then try 01/06/11/16/21/26/31/36/41/46/51/56 pattern
-            for (let i = 0; i < 12; i++) {
-                const testMinute = Math.floor(minute / 5) * 5 + 1 - (i * 5);
-                if (testMinute >= 0) {
-                    testMinutes.push(testMinute);
-                }
+            // Tertiary: previous 5-minute interval
+            const tertiaryMinute = Math.floor(minute / 5) * 5 - 5;
+            if (tertiaryMinute >= 0 && tertiaryMinute !== primaryMinute && tertiaryMinute !== secondaryMinute) {
+                testMinutes.push(tertiaryMinute);
             }
             
-            // Remove duplicates and sort in descending order (most recent first)
-            const uniqueMinutes = [...new Set(testMinutes)].sort((a, b) => b - a);
-            
-            for (let testMinute of uniqueMinutes) {
+            for (let testMinute of testMinutes) {
                 const timestampStr = `${year}${dayOfYear.toString().padStart(3, '0')}${hour.toString().padStart(2, '0')}${testMinute.toString().padStart(2, '0')}`;
                 const fallbackUrl = getProxyUrl(`https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/${region}/${data.band}/${timestampStr}_GOES19-ABI-${region}-${data.band}-2400x2400.jpg`);
                 
@@ -1382,19 +1509,26 @@
             stopTempButtonAnimation();
             stopPrecipButtonAnimation();
             
-            // Add loading spinners to forecast buttons
+            // Add loading spinners to forecast buttons (both mobile and desktop)
             const tempBtn = document.getElementById('temp-forecast-btn');
             const precipBtn = document.getElementById('precip-forecast-btn');
+            const tempBtnDesktop = document.getElementById('temp-forecast-btn-desktop');
+            const precipBtnDesktop = document.getElementById('precip-forecast-btn-desktop');
+            
             if (tempBtn) tempBtn.classList.add('loading');
             if (precipBtn) precipBtn.classList.add('loading');
+            if (tempBtnDesktop) tempBtnDesktop.classList.add('loading');
+            if (precipBtnDesktop) precipBtnDesktop.classList.add('loading');
             
             detectForecastImages('maxt', function(tempUrls) {
                 tempForecastUrls = tempUrls;
                 if (tempBtn) tempBtn.classList.remove('loading');
+                if (tempBtnDesktop) tempBtnDesktop.classList.remove('loading');
                 startTempButtonAnimation();
                 detectForecastImages('pop12', function(precipUrls) {
                     precipForecastUrls = precipUrls;
                     if (precipBtn) precipBtn.classList.remove('loading');
+                    if (precipBtnDesktop) precipBtnDesktop.classList.remove('loading');
                     startPrecipButtonAnimation();
                     forecastAnimationsRunning = false;
                 });
@@ -1404,7 +1538,8 @@
         function startTempButtonAnimation() {
             if (tempForecastUrls.length === 0) return;
             const tempImg = document.getElementById('temp-forecast-img');
-            if (!tempImg) return;
+            const tempImgDesktop = document.getElementById('temp-forecast-img-desktop');
+            if (!tempImg && !tempImgDesktop) return;
             
             // Preload all frames first
             let loadedFrames = 0;
@@ -1418,7 +1553,8 @@
                         // All frames loaded, start animation
                         let animIndex = 0;
             const showNextTempFrame = () => {
-                            tempImg.src = tempForecastUrls[animIndex];
+                            if (tempImg) tempImg.src = tempForecastUrls[animIndex];
+                            if (tempImgDesktop) tempImgDesktop.src = tempForecastUrls[animIndex];
                             animIndex = (animIndex + 1) % tempForecastUrls.length;
                     tempButtonAnimationInterval = setTimeout(showNextTempFrame, 2000);
                 };
@@ -1431,7 +1567,8 @@
                         // All frames processed, start animation even if some failed
                         let animIndex = 0;
                         const showNextTempFrame = () => {
-                            tempImg.src = tempForecastUrls[animIndex];
+                            if (tempImg) tempImg.src = tempForecastUrls[animIndex];
+                            if (tempImgDesktop) tempImgDesktop.src = tempForecastUrls[animIndex];
                             animIndex = (animIndex + 1) % tempForecastUrls.length;
                     tempButtonAnimationInterval = setTimeout(showNextTempFrame, 2000);
                 };
@@ -1445,7 +1582,8 @@
         function startPrecipButtonAnimation() {
             if (precipForecastUrls.length === 0) return;
             const precipImg = document.getElementById('precip-forecast-img');
-            if (!precipImg) return;
+            const precipImgDesktop = document.getElementById('precip-forecast-img-desktop');
+            if (!precipImg && !precipImgDesktop) return;
             
             // Preload all frames first
             let loadedFrames = 0;
@@ -1458,11 +1596,12 @@
                     if (loadedFrames === totalFrames) {
                         // All frames loaded, start animation
                         let animIndex = 0;
-            const showNextPrecipFrame = () => {
-                            precipImg.src = precipForecastUrls[animIndex];
+                        const showNextPrecipFrame = () => {
+                            if (precipImg) precipImg.src = precipForecastUrls[animIndex];
+                            if (precipImgDesktop) precipImgDesktop.src = precipForecastUrls[animIndex];
                             animIndex = (animIndex + 1) % precipForecastUrls.length;
-                    precipButtonAnimationInterval = setTimeout(showNextPrecipFrame, 2000);
-                };
+                            precipButtonAnimationInterval = setTimeout(showNextPrecipFrame, 2000);
+                        };
                         showNextPrecipFrame();
                     }
                 };
@@ -1472,11 +1611,12 @@
                         // All frames processed, start animation even if some failed
                         let animIndex = 0;
                         const showNextPrecipFrame = () => {
-                            precipImg.src = precipForecastUrls[animIndex];
+                            if (precipImg) precipImg.src = precipForecastUrls[animIndex];
+                            if (precipImgDesktop) precipImgDesktop.src = precipForecastUrls[animIndex];
                             animIndex = (animIndex + 1) % precipForecastUrls.length;
-                    precipButtonAnimationInterval = setTimeout(showNextPrecipFrame, 2000);
-                };
-            showNextPrecipFrame();
+                            precipButtonAnimationInterval = setTimeout(showNextPrecipFrame, 2000);
+                        };
+                        showNextPrecipFrame();
                     }
                 };
                 img.src = url;
@@ -1603,66 +1743,107 @@
             }
         }
 
-        // Modal functionality
-        const tempModal = document.getElementById('temp-forecast-modal');
-        const precipModal = document.getElementById('precip-forecast-modal');
-        const tempBtn = document.getElementById('temp-forecast-btn');
-        const precipBtn = document.getElementById('precip-forecast-btn');
-        const tempClose = document.getElementById('temp-close');
-        const precipClose = document.getElementById('precip-close');
+        // Modal functionality - wrapped in DOMContentLoaded to ensure elements exist
+        document.addEventListener('DOMContentLoaded', function() {
+            const tempModal = document.getElementById('temp-forecast-modal');
+            const precipModal = document.getElementById('precip-forecast-modal');
+            const tempBtn = document.getElementById('temp-forecast-btn');
+            const precipBtn = document.getElementById('precip-forecast-btn');
+            const tempBtnDesktop = document.getElementById('temp-forecast-btn-desktop');
+            const precipBtnDesktop = document.getElementById('precip-forecast-btn-desktop');
+            const tempClose = document.getElementById('temp-close');
+            const precipClose = document.getElementById('precip-close');
 
-        tempBtn.addEventListener('click', () => {
-            tempModal.style.display = 'block';
-            stopTempButtonAnimation(); // Stop button animation
-            startTempAnimation();
-        });
-
-        precipBtn.addEventListener('click', () => {
-            precipModal.style.display = 'block';
-            stopPrecipButtonAnimation(); // Stop button animation
-            startPrecipAnimation();
-        });
-
-        tempClose.addEventListener('click', () => {
-            tempModal.style.display = 'none';
-            stopTempAnimation();
-            startTempButtonAnimation(); // Restart button animation
-        });
-
-        precipClose.addEventListener('click', () => {
-            precipModal.style.display = 'none';
-            stopPrecipAnimation();
-            startPrecipButtonAnimation(); // Restart button animation
-        });
-
-        // Close modals when clicking outside
-        window.addEventListener('click', (event) => {
-            if (event.target === tempModal) {
-                tempModal.style.display = 'none';
-                stopTempAnimation();
-                startTempButtonAnimation(); // Restart button animation
+            if (tempBtn) {
+                tempBtn.addEventListener('click', () => {
+                    if (tempModal) {
+                        tempModal.style.display = 'block';
+                        stopTempButtonAnimation(); // Stop button animation
+                        startTempAnimation();
+                    }
+                });
             }
-            if (event.target === precipModal) {
-                precipModal.style.display = 'none';
-                stopPrecipAnimation();
-                startPrecipButtonAnimation(); // Restart button animation
-            }
-        });
 
-        // Close modals with Escape key
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                if (tempModal.style.display === 'block') {
+            if (precipBtn) {
+                precipBtn.addEventListener('click', () => {
+                    if (precipModal) {
+                        precipModal.style.display = 'block';
+                        stopPrecipButtonAnimation(); // Stop button animation
+                        startPrecipAnimation();
+                    }
+                });
+            }
+
+            // Desktop forecast button event listeners
+            if (tempBtnDesktop) {
+                tempBtnDesktop.addEventListener('click', () => {
+                    if (tempModal) {
+                        tempModal.style.display = 'block';
+                        stopTempButtonAnimation(); // Stop button animation
+                        startTempAnimation();
+                    }
+                });
+            }
+
+            if (precipBtnDesktop) {
+                precipBtnDesktop.addEventListener('click', () => {
+                    if (precipModal) {
+                        precipModal.style.display = 'block';
+                        stopPrecipButtonAnimation(); // Stop button animation
+                        startPrecipAnimation();
+                    }
+                });
+            }
+
+            if (tempClose) {
+                tempClose.addEventListener('click', () => {
+                    if (tempModal) {
+                        tempModal.style.display = 'none';
+                        stopTempAnimation();
+                        startTempButtonAnimation(); // Restart button animation
+                    }
+                });
+            }
+
+            if (precipClose) {
+                precipClose.addEventListener('click', () => {
+                    if (precipModal) {
+                        precipModal.style.display = 'none';
+                        stopPrecipAnimation();
+                        startPrecipButtonAnimation(); // Restart button animation
+                    }
+                });
+            }
+
+            // Close modals when clicking outside
+            window.addEventListener('click', (event) => {
+                if (tempModal && event.target === tempModal) {
                     tempModal.style.display = 'none';
                     stopTempAnimation();
                     startTempButtonAnimation(); // Restart button animation
                 }
-                if (precipModal.style.display === 'block') {
+                if (precipModal && event.target === precipModal) {
                     precipModal.style.display = 'none';
                     stopPrecipAnimation();
                     startPrecipButtonAnimation(); // Restart button animation
                 }
-            }
+            });
+
+            // Close modals with Escape key
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    if (tempModal && tempModal.style.display === 'block') {
+                        tempModal.style.display = 'none';
+                        stopTempAnimation();
+                        startTempButtonAnimation(); // Restart button animation
+                    }
+                    if (precipModal && precipModal.style.display === 'block') {
+                        precipModal.style.display = 'none';
+                        stopPrecipAnimation();
+                        startPrecipButtonAnimation(); // Restart button animation
+                    }
+                }
+            });
         });
 
         // Add this function to update the CONUS GeoColor style based on mode
@@ -1673,7 +1854,7 @@
           const img = conusGeoColor.querySelector('img');
           if (img) {
             img.style.transform = 'scale(1.5)'; // Increased zoom for both modes
-            img.style.objectFit = 'cover';
+            img.style.objectFit = 'contain';
             img.style.transition = 'transform 0.3s';
           }
         }
@@ -1705,9 +1886,212 @@
             }
           });
         }
+
+        // Generate text summary from daily forecast data
+        function generateDailySummary(forecastData, detailedData) {
+            if (!forecastData || !forecastData.properties || !forecastData.properties.periods) {
+                return '<div style="color:#888;">No forecast data available</div>';
+            }
+
+            const periods = forecastData.properties.periods.slice(0, 10); // First 5 days (day/night pairs)
+            const summaries = [];
+            
+            // Group by day
+            const dayGroups = {};
+            periods.forEach(period => {
+                const date = new Date(period.startTime);
+                const dayKey = date.toDateString();
+                const isNight = period.isDaytime === false;
+                
+                if (!dayGroups[dayKey]) {
+                    dayGroups[dayKey] = {
+                        dayName: date.toLocaleDateString('en-US', { weekday: 'short' }),
+                        day: null,
+                        night: null
+                    };
+                }
+                
+                if (isNight) {
+                    dayGroups[dayKey].night = period;
+                } else {
+                    dayGroups[dayKey].day = period;
+                }
+            });
+
+            // Generate summary for each day
+            Object.values(dayGroups).forEach((dayData, index) => {
+                if (index >= 5) return; // Limit to 5 days
+                
+                let daySummary = '';
+                const today = new Date();
+                const dayDate = new Date(dayData.day?.startTime || dayData.night?.startTime);
+                const isToday = today.toDateString() === dayDate.toDateString();
+                const dayLabel = isToday ? 'Today' : dayData.dayName;
+                
+                // Use detailed forecast if available, otherwise fall back to short forecast
+                let dayForecast = dayData.day?.detailedForecast || dayData.day?.shortForecast || '';
+                let nightForecast = dayData.night?.detailedForecast || dayData.night?.shortForecast || '';
+                
+                if (dayData.day && dayData.night) {
+                    const dayTemp = dayData.day.temperature;
+                    const nightTemp = dayData.night.temperature;
+                    const tempInfo = dayTemp !== null && nightTemp !== null ? ` (${Math.max(dayTemp, nightTemp)}°/${Math.min(dayTemp, nightTemp)}°)` : '';
+                    daySummary = `<span style="color:#4ecdc4;font-weight:bold;">${dayLabel}:</span> ${dayForecast} during the day, ${nightForecast} at night${tempInfo}`;
+                } else if (dayData.day) {
+                    const tempInfo = dayData.day.temperature !== null ? ` (${dayData.day.temperature}°)` : '';
+                    daySummary = `<span style="color:#4ecdc4;font-weight:bold;">${dayLabel}:</span> ${dayForecast}${tempInfo}`;
+                } else if (dayData.night) {
+                    const tempInfo = dayData.night.temperature !== null ? ` (${dayData.night.temperature}°)` : '';
+                    daySummary = `<span style="color:#4ecdc4;font-weight:bold;">${dayLabel}:</span> ${nightForecast}${tempInfo}`;
+                }
+                
+                if (daySummary) {
+                    summaries.push(`<div style="margin-bottom:3px;">${daySummary}</div>`);
+                }
+            });
+
+            const summaryContent = summaries.join('');
+            
+            // Update mobile accordion content
+            const mobileContent = document.getElementById('daily-summary-content');
+            if (mobileContent) {
+                mobileContent.innerHTML = summaryContent;
+                mobileContent.style.display = 'block';
+            }
+            
+            return `<div style="cursor:pointer;" onclick="toggleDailySummary()">
+                <div style="font-weight:bold;color:#00ff00;margin-bottom:5px;display:flex;align-items:center;gap:5px;">
+                    <span id="daily-summary-toggle-desktop">▶</span>
+                    5-Day Forecast
+                </div>
+            </div>
+            <div id="daily-summary-content-desktop" style="display:none;">${summaryContent}</div>`;
+        }
+
+        // Toggle daily forecast summary accordion
+        function toggleDailySummary() {
+            const content = document.getElementById('daily-summary-content-desktop');
+            const toggle = document.getElementById('daily-summary-toggle-desktop');
+            
+            if (content && toggle) {
+                if (content.style.display === 'none') {
+                    content.style.display = 'block';
+                    toggle.textContent = '▼';
+                } else {
+                    content.style.display = 'none';
+                    toggle.textContent = '▶';
+                }
+            }
+        }
+
+        // Toggle hourly forecast summary accordion
+        function toggleHourlySummary() {
+            const content = document.getElementById('hourly-summary-content-desktop');
+            const toggle = document.getElementById('hourly-summary-toggle-desktop');
+            
+            if (content && toggle) {
+                if (content.style.display === 'none') {
+                    content.style.display = 'block';
+                    toggle.textContent = '▼';
+                } else {
+                    content.style.display = 'none';
+                    toggle.textContent = '▶';
+                }
+            }
+        }
+
+        // Toggle satellite grid accordion
+        function toggleSatelliteAccordion() {
+            const content = document.getElementById('satellite-accordion-content');
+            const toggle = document.getElementById('satellite-accordion-toggle');
+            
+            if (content && toggle) {
+                if (content.style.display === 'none') {
+                    content.style.display = 'block';
+                    toggle.textContent = '▼';
+                } else {
+                    content.style.display = 'none';
+                    toggle.textContent = '▶';
+                }
+            }
+        }
+        
+        // Toggle featured animations accordion (mobile)
+        function toggleFeaturedAccordion(accordionId) {
+            const content = document.getElementById(accordionId);
+            const button = content.previousElementSibling;
+            
+            if (content && button) {
+                const isOpen = content.classList.contains('open');
+                
+                // Close all other accordions
+                document.querySelectorAll('.accordion-content').forEach(acc => {
+                    acc.classList.remove('open');
+                });
+                document.querySelectorAll('.accordion-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Toggle current accordion
+                if (!isOpen) {
+                    content.classList.add('open');
+                    button.classList.add('active');
+                }
+            }
+        }
+
+        // Toggle forecast summary accordion
+        function toggleForecastAccordion(accordionId) {
+            const content = document.getElementById(accordionId);
+            const button = content.previousElementSibling;
+            
+            if (content && button) {
+                const isOpen = content.classList.contains('open');
+                
+                // Close all other accordions
+                document.querySelectorAll('.accordion-content').forEach(acc => {
+                    acc.classList.remove('open');
+                });
+                document.querySelectorAll('.accordion-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Toggle current accordion
+                if (!isOpen) {
+                    content.classList.add('open');
+                    button.classList.add('active');
+                }
+            }
+        }
     </script>
+
+    <!-- Temperature Forecast Modal -->
+    <div id="temp-forecast-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Temperature Forecast Animation</h2>
+                <span id="temp-close" class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="temp-forecast-anim" src="" alt="Temperature Forecast Animation">
+            </div>
+        </div>
+    </div>
+
+    <!-- Precipitation Forecast Modal -->
+    <div id="precip-forecast-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Precipitation Forecast Animation</h2>
+                <span id="precip-close" class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="precip-forecast-anim" src="" alt="Precipitation Forecast Animation">
+            </div>
+        </div>
+    </div>
 </body>
 <footer class="weather-footer">
-    Created by <a href="https://hromp.com" target="_blank">hromp.com</a>
+    Created by <a href="https://hromp.com" target="_blank">hromp.com</a> with data from <a href="https://weather.gov" target="_blank">weather.gov</a>
 </footer>
 </html>

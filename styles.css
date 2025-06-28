@@ -266,14 +266,12 @@ body {
     overflow: hidden;
 }
 
-.satellite-item.featured .satellite-image {
+.satellite-item.featured img {
     width: 100%;
     height: 100%;
-    object-fit: cover !important;
-    object-position: top !important;
+    object-fit: cover;
     display: block;
     background: #000;
-    transform: scale(2.40) translateY(28%) translateX(-24%) !important;
 }
 
 .forecast-link-container:first-of-type {
@@ -452,6 +450,7 @@ body {
     transition: background-color 0.3s ease;
     position: relative;
     overflow: hidden;
+    z-index: 3;
 }
 
 .forecast-button-img {
@@ -464,6 +463,7 @@ body {
     opacity: 0.3;
     z-index: 1;
     transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
 .forecast-link-btn:hover .forecast-button-img {
@@ -475,6 +475,7 @@ body {
     z-index: 2;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     padding: 20px;
+    pointer-events: none;
 }
 
 .forecast-link-btn h3 {
@@ -655,6 +656,470 @@ body {
     }
 }
 
+/* Mobile-First Responsive Design */
+@media (max-width: 768px) {
+    /* Weather Data Layout - Stack vertically */
+    .weather-data {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .current-conditions {
+        width: 100%;
+        order: 1;
+    }
+    
+    .forecast {
+        width: 100%;
+        min-width: unset;
+        order: 2;
+        margin-top: 10px;
+    }
+    
+    /* Current Conditions Header - Better mobile layout */
+    .current-conditions-header {
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 8px;
+        flex-wrap: nowrap;
+    }
+    
+    .current-conditions-header h2 {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+        margin-right: auto;
+        flex-shrink: 0;
+    }
+    
+    /* Button group for the three buttons */
+    .button-group {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+    }
+    
+    /* Buttons - Touch-friendly sizing */
+    #change-zip-btn,
+    .mode-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        min-height: 32px;
+        border-radius: 4px;
+        flex: 1;
+        max-width: 80px;
+    }
+    
+    /* Forecast Grid - Better mobile scrolling */
+    .forecast-grid {
+        gap: 4px;
+        padding: 5px 0;
+    }
+    
+    .forecast-day {
+        min-width: 70px;
+        padding: 8px 4px;
+    }
+    
+    .forecast-day .day-name {
+        font-size: 0.8rem;
+    }
+    
+    .forecast-day .temp {
+        font-size: 1rem;
+    }
+    
+    /* Featured Animations - Stack vertically and make full-width */
+    .forecast-animations-row {
+        flex-direction: column;
+        gap: 10px;
+        max-height: none;
+        height: auto;
+        margin: 15px 0;
+    }
+    
+    .forecast-animations-row > * {
+        max-width: 100%;
+        width: 100%;
+        height: 180px;
+        min-height: 160px;
+    }
+    
+    /* Accordion Button Styles */
+    .accordion-button {
+        width: 100%;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 12px 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: 5px;
+    }
+    
+    .accordion-button:hover {
+        background: #2a2a2a;
+    }
+    
+    .accordion-button.active {
+        background: #2a2a2a;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    
+    /* Hamburger Icon */
+    .hamburger-icon {
+        width: 20px;
+        height: 20px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.3s;
+    }
+    
+    .hamburger-icon::before,
+    .hamburger-icon::after,
+    .hamburger-icon span {
+        content: '';
+        width: 16px;
+        height: 2px;
+        background: #00ff00;
+        transition: all 0.3s;
+        position: absolute;
+    }
+    
+    .hamburger-icon::before {
+        transform: translateY(-6px);
+    }
+    
+    .hamburger-icon::after {
+        transform: translateY(6px);
+    }
+    
+    .hamburger-icon span {
+        transform: translateY(0);
+    }
+    
+    /* Active hamburger animation */
+    .accordion-button.active .hamburger-icon::before {
+        transform: translateY(0) rotate(45deg);
+    }
+    
+    .accordion-button.active .hamburger-icon::after {
+        transform: translateY(0) rotate(-45deg);
+    }
+    
+    .accordion-button.active .hamburger-icon span {
+        opacity: 0;
+    }
+    
+    /* Accordion Title */
+    .accordion-title {
+        font-weight: bold;
+        color: #00ff00;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        flex: 1;
+    }
+    
+    /* Accordion Content */
+    .accordion-content {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-top: none;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease-out;
+    }
+    
+    .accordion-content.open {
+        max-height: 1000px;
+        transition: max-height 0.3s ease-in;
+    }
+    
+    /* Mobile/Desktop visibility */
+    .featured-animations-mobile {
+        display: block;
+    }
+    
+    .forecast-summary-mobile {
+        display: block;
+    }
+    
+    .desktop-only {
+        display: none !important;
+    }
+    
+    /* Hide the original forecast-animations-row on mobile */
+    .forecast-animations-row:not(.desktop-only) {
+        display: none !important;
+    }
+    
+    /* Accordion content styling */
+    .accordion-content .satellite-item,
+    .accordion-content .forecast-link-container {
+        height: 200px;
+        min-height: 180px;
+        margin: 10px;
+        border-radius: 8px;
+    }
+    
+    /* Hide overlay text on mobile for accordion content */
+    .accordion-content .overlay-text {
+        display: none !important;
+    }
+    
+    .accordion-content .forecast-button-content {
+        display: none !important;
+    }
+    
+    /* Remove shaded overlay effect on forecast maps for mobile */
+    .accordion-content .forecast-button-img {
+        opacity: 1 !important;
+    }
+    
+    .accordion-content .forecast-link-btn:hover .forecast-button-img {
+        opacity: 1 !important;
+    }
+    
+    /* Ensure desktop forecast maps are not affected by mobile rules */
+    .forecast-animations-row .forecast-button-img {
+        opacity: 0.3 !important;
+    }
+    
+    .forecast-animations-row .forecast-link-btn:hover .forecast-button-img {
+        opacity: 0.5 !important;
+    }
+    
+    /* Override for desktop only */
+    @media (min-width: 769px) {
+        .forecast-animations-row .forecast-button-img {
+            opacity: 0.85 !important;
+        }
+        
+        .forecast-animations-row .forecast-link-btn:hover .forecast-button-img {
+            opacity: 1 !important;
+        }
+    }
+    
+    /* Satellite Grid - Single column */
+    .satellite-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .satellite-item {
+        min-height: 150px;
+    }
+    
+    /* Accordion Styling - Mobile-friendly */
+    #forecast-summary-container,
+    #satellite-accordion-container {
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #333;
+    }
+    
+    /* Accordion Headers - Touch-friendly */
+    #forecast-summary-container > div,
+    #satellite-accordion-container > div {
+        padding: 15px;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Accordion Content - Better spacing */
+    #forecast-summary-content,
+    #daily-summary-content,
+    #hourly-summary-content,
+    #daily-summary-content-desktop,
+    #hourly-summary-content-desktop,
+    #satellite-accordion-content {
+        padding: 15px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    /* Modal - Better mobile sizing */
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        max-height: 85vh;
+    }
+    
+    .modal-header {
+        padding: 15px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    /* Current Weather Details - Better mobile layout */
+    .current-weather {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .current-weather .details {
+        flex-direction: column;
+        gap: 3px;
+    }
+    
+    /* Location Input - Better mobile layout */
+    .location-input {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .location-input input,
+    .location-input button {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 6px;
+    }
+    
+    /* Alerts - Better mobile layout */
+    .alert-item {
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+    }
+    
+    .alert-close {
+        padding: 8px;
+        font-size: 1.5rem;
+    }
+    
+    /* Footer - Better mobile spacing */
+    .weather-footer {
+        margin: 30px 0 20px 0;
+        padding: 0 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .weather-data {
+        padding: 8px;
+    }
+    
+    .current-conditions-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .current-conditions-header h2 {
+        font-size: 0.9rem;
+    }
+    
+    #change-zip-btn,
+    .mode-btn {
+        padding: 10px 15px;
+        font-size: 1rem;
+        min-height: 44px;
+    }
+    
+    .forecast-day {
+        min-width: 60px;
+        padding: 6px 3px;
+    }
+    
+    .forecast-day .day-name {
+        font-size: 0.7rem;
+    }
+    
+    .forecast-day .temp {
+        font-size: 0.9rem;
+    }
+    
+    .forecast-animations-row > * {
+        height: 180px;
+        min-height: 160px;
+    }
+    
+    .satellite-item {
+        min-height: 120px;
+    }
+    
+    /* Accordion content - Smaller text for very small screens */
+    #forecast-summary-content,
+    #daily-summary-content,
+    #hourly-summary-content,
+    #daily-summary-content-desktop,
+    #hourly-summary-content-desktop,
+    #satellite-accordion-content {
+        font-size: 0.85rem;
+        padding: 12px;
+    }
+    
+    /* Modal - Even smaller for very small screens */
+    .modal-content {
+        width: 98%;
+        margin: 2% auto;
+    }
+    
+    .modal-header {
+        padding: 12px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1rem;
+    }
+    
+    .modal-body {
+        padding: 12px;
+    }
+}
+
+/* Landscape Mobile - Optimize for wider screens */
+@media (max-width: 900px) and (orientation: landscape) {
+    .weather-data {
+        flex-direction: row;
+        gap: 15px;
+    }
+    
+    .current-conditions {
+        flex: 1;
+        order: 1;
+    }
+    
+    .forecast {
+        flex: 1;
+        order: 2;
+        margin-top: 0;
+    }
+    
+    .forecast-animations-row {
+        flex-direction: row;
+        max-height: 25vh;
+        height: 25vh;
+    }
+    
+    .forecast-animations-row > * {
+        max-width: 32%;
+        height: 100%;
+    }
+}
+
 .weather-footer {
     width: 100%;
     text-align: center;
@@ -744,4 +1209,85 @@ body {
     font-size: 0.8rem;
     font-weight: bold;
     color: #4ecdc4;
+}
+
+/* Desktop styles - show desktop version, hide mobile */
+@media (min-width: 769px) {
+    .forecast-summary-mobile {
+        display: none !important;
+    }
+    .desktop-only {
+        display: flex !important;
+    }
+    /* Special case for forecast summary container - needs to be block */
+    #forecast-summary-container.desktop-only {
+        display: block !important;
+    }
+    /* Ensure forecast summary content is visible */
+    #forecast-summary-container .desktop-only {
+        display: block !important;
+    }
+    /* Ensure forecast map images are visible on desktop */
+    #temp-forecast-img-desktop,
+    #precip-forecast-img-desktop {
+        display: block !important;
+        opacity: 0.85 !important;
+        width: 100%;
+        height: auto;
+    }
+    
+    .featured-animations-mobile {
+        display: none !important;
+    }
+    
+    .forecast-animations-row {
+        display: flex !important;
+    }
+    
+    .desktop-only .forecast-animations-row .forecast-button-img {
+        opacity: 0.85 !important;
+    }
+    
+    .desktop-only .forecast-animations-row .forecast-link-btn:hover .forecast-button-img {
+        opacity: 1 !important;
+    }
+    
+    .forecast-animations-row .forecast-button-content {
+        display: block !important;
+    }
+    
+    .forecast-animations-row .overlay-text {
+        display: block !important;
+    }
+    
+    .button-group {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+    }
+    
+    #change-zip-btn,
+    .mode-btn {
+        padding: 1px 5px;
+        font-size: 0.7rem;
+        min-height: auto;
+        border-radius: 3px;
+        flex: none;
+        max-width: none;
+    }
+    
+    .current-conditions-header {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 0;
+        flex-wrap: wrap;
+    }
+    
+    .current-conditions-header h2 {
+        font-size: 0.8rem;
+        margin-bottom: 0;
+        margin-right: 0;
+        flex-shrink: 0;
+    }
 }
