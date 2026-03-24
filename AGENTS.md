@@ -21,6 +21,7 @@ pip3 install flask requests
 ### Key caveats
 - **No linter / test suite / build step exists.** The project is pure vanilla HTML/CSS/JS with no package manager or config files. There is nothing to lint or unit-test.
 - **Satellite imagery requires internet access.** All data comes from public NOAA APIs (`api.weather.gov`, `cdn.star.nesdis.noaa.gov`). The app cannot function offline.
-- **CONUS GeoColor satellite panel** expects a reverse proxy at path `/weatherpage/proxy-satellite/...` to reach `cdn.star.nesdis.noaa.gov`. This proxy is not included in the repo, so the satellite animation tile on the left will show a broken image in local dev. The temperature/precipitation forecast maps and all weather data still work fine.
+- **NOAA CDN serves `Access-Control-Allow-Origin: *`**, so satellite images load directly from `cdn.star.nesdis.noaa.gov` without any proxy. No reverse proxy is needed for local development.
+- **Satellite image timestamps** are computed from the current UTC time. CONUS GEOCOLOR images appear at 5-minute intervals (minutes 01, 06, 11, ...), Full Disk images at 10-minute intervals (00, 10, 20, ...), and EXTENT3 Lightning Mapper at 5-minute intervals (01, 06, 11, ...). If images don't load, the timestamp calculation is likely hitting a gap — check the CDN directory listing to verify available timestamps.
 - **`proxy_gif.py`** is optional — it proxies two specific NOAA GIF URLs for the Temperature/Precipitation forecast map modals. The upstream NOAA server may sometimes return errors (502); this is not a code bug.
 - The entire application logic lives inside `index.html` (inline `<script>` block, ~1500 lines of JS). There is no separate JS file.
