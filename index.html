@@ -1475,8 +1475,14 @@
         
         setInterval(getWeatherData, 30 * 60 * 1000);
         
-        // Refresh animations every 15 minutes
+        // Refresh satellite animations every 15 minutes
         setInterval(initializeAnimations, 15 * 60 * 1000);
+        
+        // Refresh forecast map animations every 30 minutes
+        setInterval(function() {
+            forecastAnimationsRunning = false;
+            startForecastAnimations();
+        }, 30 * 60 * 1000);
 
         // --- FORECAST MAP ANIMATION ---
         let tempForecastUrls = [];
@@ -1511,15 +1517,16 @@
           return 'CONUS';
         }
 
-        // Update detectForecastImages to use the correct sector
+        // Detect available forecast image frames from graphical.weather.gov
         function detectForecastImages(element, callback) {
           const baseUrl = 'https://graphical.weather.gov/GraphicalNDFD.php';
           const sector = getNDFDSector();
           const timezone = 'EDT';
-          const width = 800; // Larger width for modal display
+          const width = 800;
           const urls = [];
           let n = 1;
           let maxTries = 10;
+          let consecutiveErrors = 0;
           function tryNext() {
             if (n > maxTries) {
               callback(urls);
@@ -1529,29 +1536,38 @@
             const img = new window.Image();
             img.style.display = 'none';
             img.onload = function() {
+              if (img.parentNode) img.parentNode.removeChild(img);
               urls.push(url);
+              consecutiveErrors = 0;
               n++;
               tryNext();
             };
             img.onerror = function() {
-              callback(urls);
+              if (img.parentNode) img.parentNode.removeChild(img);
+              consecutiveErrors++;
+              if (consecutiveErrors >= 2 || urls.length > 0) {
+                callback(urls);
+              } else {
+                n++;
+                tryNext();
+              }
             };
-            document.body.appendChild(img); // Needed for some browsers to trigger load/error
+            document.body.appendChild(img);
             img.src = url;
           }
           tryNext();
         }
 
+        let forecastRetryCount = 0;
+        const FORECAST_MAX_RETRIES = 3;
+
         function startForecastAnimations() {
-            // Prevent multiple simultaneous calls
             if (forecastAnimationsRunning) return;
             forecastAnimationsRunning = true;
             
-            // Stop existing animations first
             stopTempButtonAnimation();
             stopPrecipButtonAnimation();
             
-            // Add loading spinners to forecast buttons (both mobile and desktop)
             const tempBtn = document.getElementById('temp-forecast-btn');
             const precipBtn = document.getElementById('precip-forecast-btn');
             const tempBtnDesktop = document.getElementById('temp-forecast-btn-desktop');
@@ -1562,6 +1578,18 @@
             if (tempBtnDesktop) tempBtnDesktop.classList.add('loading');
             if (precipBtnDesktop) precipBtnDesktop.classList.add('loading');
             
+            function finishForecastLoad() {
+                forecastAnimationsRunning = false;
+                if (tempForecastUrls.length === 0 && precipForecastUrls.length === 0 &&
+                    forecastRetryCount < FORECAST_MAX_RETRIES) {
+                    forecastRetryCount++;
+                    console.log(`Forecast maps empty, retrying (${forecastRetryCount}/${FORECAST_MAX_RETRIES})...`);
+                    setTimeout(startForecastAnimations, 5000 * forecastRetryCount);
+                } else {
+                    forecastRetryCount = 0;
+                }
+            }
+
             detectForecastImages('maxt', function(tempUrls) {
                 tempForecastUrls = tempUrls;
                 if (tempBtn) tempBtn.classList.remove('loading');
@@ -1572,7 +1600,7 @@
                     if (precipBtn) precipBtn.classList.remove('loading');
                     if (precipBtnDesktop) precipBtnDesktop.classList.remove('loading');
                     startPrecipButtonAnimation();
-                    forecastAnimationsRunning = false;
+                    finishForecastLoad();
                 });
             });
         }
