@@ -470,6 +470,8 @@
     <script>
         // NWS API Configuration
         const NWS_API_BASE = 'https://api.weather.gov';
+        /** Hourly periods to show (NWS returns many; 12 omitted afternoon/evening vs daily narrative). */
+        const HOURLY_FORECAST_PERIODS = 24;
         let currentLocation = { lat: 43.9998, lng: -73.1671 }; // Default to Middlebury, VT
         let currentZipCode = '05753'; // Default ZIP code for Middlebury, VT
         
@@ -744,15 +746,15 @@
                 const summaryDiv = document.getElementById('forecast-summary');
                 if (summaryContainer && summaryDiv) {
                     summaryContainer.style.display = 'block';
-                    summaryDiv.innerHTML = generateDailySummary(forecastData, detailedData) + '<br>' + generateHourlySummary(hourlyData.properties.periods.slice(0, 12), detailedData);
+                    summaryDiv.innerHTML = generateDailySummary(forecastData, detailedData) + '<br>' + generateHourlySummary(hourlyData.properties.periods.slice(0, HOURLY_FORECAST_PERIODS), detailedData);
                 }
                 
                 // Also populate mobile accordion content
                 generateDailySummary(forecastData, detailedData);
-                generateHourlySummary(hourlyData.properties.periods.slice(0, 12), detailedData);
+                generateHourlySummary(hourlyData.properties.periods.slice(0, HOURLY_FORECAST_PERIODS), detailedData);
             } else {
                 // --- HOURLY FORECAST ---
-                const hourlyPeriods = hourlyData.properties.periods.slice(0, 12); // Show next 12 hours
+                const hourlyPeriods = hourlyData.properties.periods.slice(0, HOURLY_FORECAST_PERIODS);
                 let forecastHTML = '<div class="forecast-grid">';
                 hourlyPeriods.forEach(period => {
                     const date = new Date(period.startTime);
@@ -780,12 +782,12 @@
                 const summaryDiv = document.getElementById('forecast-summary');
                 if (summaryContainer && summaryDiv) {
                     summaryContainer.style.display = 'block';
-                    summaryDiv.innerHTML = generateDailySummary(forecastData, detailedData) + '<br>' + generateHourlySummary(hourlyData.properties.periods.slice(0, 12), detailedData);
+                    summaryDiv.innerHTML = generateDailySummary(forecastData, detailedData) + '<br>' + generateHourlySummary(hourlyData.properties.periods.slice(0, HOURLY_FORECAST_PERIODS), detailedData);
                 }
                 
                 // Also populate mobile accordion content
                 generateDailySummary(forecastData, detailedData);
-                generateHourlySummary(hourlyData.properties.periods.slice(0, 12), detailedData);
+                generateHourlySummary(hourlyData.properties.periods.slice(0, HOURLY_FORECAST_PERIODS), detailedData);
             }
         }
 
@@ -798,9 +800,7 @@
             const summaries = [];
             
             // Group by hour and create summary
-            hourlyPeriods.forEach((period, index) => {
-                if (index >= 12) return; // Limit to 12 hours
-                
+            hourlyPeriods.forEach((period) => {
                 const time = new Date(period.startTime);
                 const timeStr = time.toLocaleTimeString('en-US', { 
                     hour: 'numeric', 
@@ -828,7 +828,7 @@
             return `<div style="cursor:pointer;" onclick="toggleHourlySummary()">
                 <div style="font-weight:bold;color:#00ff00;margin-bottom:5px;display:flex;align-items:center;gap:5px;">
                     <span id="hourly-summary-toggle-desktop">▶</span>
-                    Hourly Forecast
+                    Hourly forecast (next ${HOURLY_FORECAST_PERIODS} hours)
                 </div>
             </div>
             <div id="hourly-summary-content-desktop" style="display:none;">${summaryContent}</div>`;
